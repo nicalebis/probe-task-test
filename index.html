@@ -1669,20 +1669,25 @@ function scheduleNextProbe(jitterMs){
   if (ended) return;
 
   const d = (typeof jitterMs === 'number') ? jitterMs : randInt(minSOA, maxSOA);
-  const remain = msVideoTotal() - msVideo();
+  let remain = msVideoTotal() - msVideo();
 
-  if (d > remain) {
-    // If there’s still enough time to flash one more probe, do it immediately
-    if (remain >= MIN_ONSCREEN_MS) {
-      showProbe();
-    }
-    return; // don’t schedule beyond video end
+  if (!isFinite(remain) || remain <= 0) {
+    // duration not ready or video basically done
+    return;
+  }
+
+  // Clamp the delay so we never exceed remaining video time
+  const delay = Math.min(d, remain - MIN_ONSCREEN_MS);
+
+  if (delay < MIN_ONSCREEN_MS) {
+    // very near end: flash one more probe immediately
+    showProbe();
+    return;
   }
 
   nextTimer = setTimeout(() => {
-    if (ended) return;
-    showProbe();
-  }, d);
+    if (!ended) showProbe();
+  }, delay);
 }
 
 function cancelNextProbe(){ if(nextTimer){ clearTimeout(nextTimer); nextTimer=null; } }
