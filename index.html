@@ -1572,6 +1572,54 @@ class PracticeMotionBackground { constructor(jsPsych){ this.jsPsych = jsPsych; }
 
 
 
+// =============================
+// Generate comprehension check trial
+// =============================
+function comprehensionCheck(videoSrc){
+  const vidName = videoSrc.split('/').pop(); // e.g. "clip1.mp4"
+  const bank = questionBank[vidName];
+  if (!bank) {
+    console.warn("No question bank entry for", vidName);
+    return null;
+  }
+
+  // Pick text vs image at random
+  const type = jsPsych.randomization.sampleWithoutReplacement(["text","image"],1)[0];
+  const entry = jsPsych.randomization.sampleWithoutReplacement(bank[type],1)[0];
+
+  // Option order randomization
+  const shuffled = jsPsych.randomization.shuffle(entry.options);
+  const [optF, optJ] = shuffled;
+
+  // Build HTML
+  let stim = `<div style="color:#e5e7eb;max-width:900px;margin:0 auto;text-align:center">
+    <h3>${entry.prompt}</h3>
+    <div style="display:flex;justify-content:center;gap:40px;margin-top:40px">
+      <div style="flex:1;text-align:center">
+        <div style="margin-bottom:10px">Press <kbd>F</kbd></div>`;
+  if (type==="text") stim += `<div style="padding:12px;border:1px solid #555;border-radius:8px">${optF}</div>`;
+  else stim += `<img src="${optF}" style="max-width:200px;max-height:200px;border:1px solid #555;border-radius:8px">`;
+  stim += `</div><div style="flex:1;text-align:center">
+        <div style="margin-bottom:10px">Press <kbd>J</kbd></div>`;
+  if (type==="text") stim += `<div style="padding:12px;border:1px solid #555;border-radius:8px">${optJ}</div>`;
+  else stim += `<img src="${optJ}" style="max-width:200px;max-height:200px;border:1px solid #555;border-radius:8px">`;
+  stim += `</div></div></div>`;
+
+  return {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: stim,
+    choices: ['f','j'],
+    data: {
+      comprehension_check: true,
+      video: vidName,
+      type,
+      prompt: entry.prompt,
+      optionF: optF,
+      optionJ: optJ
+    }
+  };
+}	
+
 
 
 // =============================
