@@ -1623,6 +1623,147 @@ function comprehensionCheck(videoSrc){
 
 
 // =============================
+// Question bank for comprehension checks
+// =============================
+const questionBank = {
+  "clip1.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a wheel rolls:", 
+        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
+      { prompt: "In the event you just saw, the experimenter:", 
+        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
+    ],
+    image: [
+      { prompt: "In the event you just saw, which object was in it?", 
+        options: ["img/clip1_objA.png", "img/clip1_objB.png"] },
+      { prompt: "In the event you just saw, which scenario did you encounter?", 
+        options: ["img/clip1_objA.png", "img/clip1_objB.png"] }
+    ]
+  },
+
+  "clip2.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a wheel rolls:", 
+        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
+      { prompt: "In the event you just saw, the experimenter:", 
+        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
+    ],
+    image: [
+      { prompt: "In the event you just saw, which object was in it?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
+      { prompt: "In the event you just saw, which scenario did you encounter?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+    ]
+  },
+
+  "clip3.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a wheel rolls:", 
+        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
+      { prompt: "In the event you just saw, the experimenter:", 
+        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
+    ],
+    image: [
+      { prompt: "In the event you just saw, which object was in it?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
+      { prompt: "In the event you just saw, which scenario did you encounter?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+    ]
+  },
+
+  "clip4.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a wheel rolls:", 
+        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
+      { prompt: "In the event you just saw, the experimenter:", 
+        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
+    ],
+    image: [
+      { prompt: "In the event you just saw, which object was in it?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
+      { prompt: "In the event you just saw, which scenario did you encounter?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+    ]
+  },
+
+  "clip5.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a wheel rolls:", 
+        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
+      { prompt: "In the event you just saw, the experimenter:", 
+        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
+    ],
+    image: [
+      { prompt: "In the event you just saw, which object was in it?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
+      { prompt: "In the event you just saw, which scenario did you encounter?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+    ]
+  },
+
+  "clip6.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a wheel rolls:", 
+        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
+      { prompt: "In the event you just saw, the experimenter:", 
+        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
+    ],
+    image: [
+      { prompt: "In the event you just saw, which object was in it?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
+      { prompt: "In the event you just saw, which scenario did you encounter?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+    ]
+  },
+
+  "clip7.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a wheel rolls:", 
+        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
+      { prompt: "In the event you just saw, the experimenter:", 
+        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
+    ],
+    image: [
+      { prompt: "In the event you just saw, which object was in it?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
+      { prompt: "In the event you just saw, which scenario did you encounter?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+    ]
+  },
+
+  "clip8.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a wheel rolls:", 
+        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
+      { prompt: "In the event you just saw, the experimenter:", 
+        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
+    ],
+    image: [
+      { prompt: "In the event you just saw, which object was in it?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
+      { prompt: "In the event you just saw, which scenario did you encounter?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+    ]
+  },
+
+  "clip9.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a wheel rolls:", 
+        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
+      { prompt: "In the event you just saw, the experimenter:", 
+        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
+    ],
+    image: [
+      { prompt: "In the event you just saw, which object was in it?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
+      { prompt: "In the event you just saw, which scenario did you encounter?", 
+        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+    ]
+  },
+
+};
+
+// =============================
 // Video + Probe plugin
 // =============================
 class VideoProbeDetect { constructor(jsPsych){ this.jsPsych = jsPsych; }
@@ -2329,6 +2470,7 @@ function buildAndAppendMainTimeline(){
   seq.forEach((v,i)=>{
     blocks.push(interstitial());
     blocks.push(trialForVideo(v,i));
+	blocks.push(comprehensionCheck(v));   // new comprehension screen
     if (OPTIONS.SHOW_BLOCK_SUMMARY) blocks.push({ type: VideoSummary });
     if (OPTIONS.USE_MICRO_QUESTIONS && (i+1) % OPTIONS.MICRO_QUESTION_EVERY === 0) blocks.push(microCheck);
   });
