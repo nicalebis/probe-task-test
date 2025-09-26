@@ -173,17 +173,31 @@ let TRIAL_DEFAULTS = {
 };
 
 
-// Video list (edit as needed)
 const video_list = [
-  'videos/clip1.mp4',
-  'videos/clip2.mp4',
-  'videos/clip3.mp4',
-  'videos/clip4.mp4',
-  'videos/clip5.mp4',
-  'videos/clip6.mp4',
-  'videos/clip7.mp4',
-  'videos/clip8.mp4',
-  'videos/clip9.mp4',
+  'videos/ANS Feature.mp4',
+  'videos/ANS Modulation.mp4',
+  'videos/ANS Normal.mp4',
+  'videos/ANS VOE.mp4',
+  'videos/Continuity Feature.mp4',
+  'videos/Continuity Modulation.mp4',
+  'videos/Continuity Normal.mp4',
+  'videos/Continuity VOE.mp4',
+  'videos/H Solidity Feature.mp4',
+  'videos/H Solidity Modulation.mp4',
+  'videos/H Solidity Normal.mp4',
+  'videos/H Solidity VOE.mp4',
+  'videos/Solidity Feature.mp4',
+  'videos/Solidity Modulation.mp4',
+  'videos/Solidity Normal.mp4',
+  'videos/Solidity VOE.mp4',
+  'videos/Support Feature.mp4',
+  'videos/Support Modulation.mp4',
+  'videos/Support Normal.mp4',
+  'videos/Support VOE.mp4',
+  'videos/Wynn Feature.mp4',
+  'videos/Wynn Modulation.mp4',
+  'videos/Wynn Normal.mp4',
+  'videos/Wynn VOE.mp4',
 ];
 
 const preloadVideos = {
@@ -1573,37 +1587,47 @@ class PracticeMotionBackground { constructor(jsPsych){ this.jsPsych = jsPsych; }
 
 
 // =============================
-// Generate comprehension check trial
+// Comprehension check (text-only, 4 candidates per video)
 // =============================
 function comprehensionCheck(videoSrc){
-  const vidName = videoSrc.split('/').pop(); // e.g. "clip1.mp4"
+  // videoSrc looks like "videos/ANS Feature.mp4" → we want the filename only
+  const vidName = String(videoSrc).split('/').pop();
   const bank = questionBank[vidName];
-  if (!bank) {
-    console.warn("No question bank entry for", vidName);
+
+  // Guard: if no entry or no text questions, skip the check for this video
+  if (!bank || !Array.isArray(bank.text) || bank.text.length === 0) {
+    console.warn('[comprehensionCheck] No text questions for', vidName);
     return null;
   }
 
-  // Pick text vs image at random
-  const type = jsPsych.randomization.sampleWithoutReplacement(["text","image"],1)[0];
-  const entry = jsPsych.randomization.sampleWithoutReplacement(bank[type],1)[0];
+  // Pick ONE of the 4 text questions at random
+  const entry = jsPsych.randomization.sampleWithoutReplacement(bank.text, 1)[0];
 
-  // Option order randomization
-  const shuffled = jsPsych.randomization.shuffle(entry.options);
+  // Ensure exactly two options and shuffle onto F/J
+  const opts = Array.isArray(entry.options) ? entry.options.slice(0, 2) : [];
+  if (opts.length < 2) {
+    console.warn('[comprehensionCheck] Not enough options for', vidName, entry);
+    return null;
+  }
+  const shuffled = jsPsych.randomization.shuffle(opts);
   const [optF, optJ] = shuffled;
 
-  // Build HTML
-  let stim = `<div style="color:#e5e7eb;max-width:900px;margin:0 auto;text-align:center">
-    <h3>${entry.prompt}</h3>
-    <div style="display:flex;justify-content:center;gap:40px;margin-top:40px">
-      <div style="flex:1;text-align:center">
-        <div style="margin-bottom:10px">Press <kbd>F</kbd></div>`;
-  if (type==="text") stim += `<div style="padding:12px;border:1px solid #555;border-radius:8px">${optF}</div>`;
-  else stim += `<img src="${optF}" style="max-width:200px;max-height:200px;border:1px solid #555;border-radius:8px">`;
-  stim += `</div><div style="flex:1;text-align:center">
-        <div style="margin-bottom:10px">Press <kbd>J</kbd></div>`;
-  if (type==="text") stim += `<div style="padding:12px;border:1px solid #555;border-radius:8px">${optJ}</div>`;
-  else stim += `<img src="${optJ}" style="max-width:200px;max-height:200px;border:1px solid #555;border-radius:8px">`;
-  stim += `</div></div></div>`;
+  // Build simple text-only UI
+  const stim = `
+    <div style="color:#e5e7eb;max-width:900px;margin:0 auto;text-align:center">
+      <h3 style="line-height:1.35">${entry.prompt}</h3>
+      <div style="display:flex;justify-content:center;gap:40px;margin-top:32px">
+        <div style="flex:1;max-width:440px">
+          <div style="margin-bottom:8px">Press <kbd>F</kbd></div>
+          <div style="padding:12px;border:1px solid #555;border-radius:8px">${optF}</div>
+        </div>
+        <div style="flex:1;max-width:440px">
+          <div style="margin-bottom:8px">Press <kbd>J</kbd></div>
+          <div style="padding:12px;border:1px solid #555;border-radius:8px">${optJ}</div>
+        </div>
+      </div>
+    </div>
+  `;
 
   return {
     type: jsPsychHtmlKeyboardResponse,
@@ -1612,155 +1636,214 @@ function comprehensionCheck(videoSrc){
     data: {
       comprehension_check: true,
       video: vidName,
-      type,
       prompt: entry.prompt,
       optionF: optF,
       optionJ: optJ
+    },
+    on_finish: (data) => {
+      // jsPsych v7 stores the pressed key as a string in data.response
+      const k = (data.response || '').toLowerCase();
+      data.choice_key = k;
+      data.choice_text = (k === 'f') ? data.optionF : (k === 'j') ? data.optionJ : null;
     }
   };
-}	
+}
 
 
 
-// =============================
-// Question bank for comprehension checks
-// =============================
 const questionBank = {
-  "clip1.mp4": {
+  "ANS Feature.mp4": {
     text: [
-      { prompt: "In the event you just saw, a wheel rolls:", 
-        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
-      { prompt: "In the event you just saw, the experimenter:", 
-        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
-    ],
-    image: [
-      { prompt: "In the event you just saw, which object was in it?", 
-        options: ["img/clip1_objA.png", "img/clip1_objB.png"] },
-      { prompt: "In the event you just saw, which scenario did you encounter?", 
-        options: ["img/clip1_objA.png", "img/clip1_objB.png"] }
+      { prompt: "In the event you just saw, some objects were placed:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
+      { prompt: "In the event you just saw, some objects were placed:", options: ["on the purple shelf", "on the green board"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed some objects behind a screen", "placed some objects in a bucket"] },
     ]
   },
-
-  "clip2.mp4": {
+  "ANS Modulation.mp4": {
     text: [
-      { prompt: "In the event you just saw, a wheel rolls:", 
-        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
-      { prompt: "In the event you just saw, the experimenter:", 
-        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
-    ],
-    image: [
-      { prompt: "In the event you just saw, which object was in it?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
-      { prompt: "In the event you just saw, which scenario did you encounter?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+      { prompt: "In the event you just saw, some objects were placed:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
+      { prompt: "In the event you just saw, some objects were placed:", options: ["on the purple shelf", "on the green board"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed some objects behind a screen", "placed some objects in a bucket"] },
     ]
   },
-
-  "clip3.mp4": {
+  "ANS Normal.mp4": {
     text: [
-      { prompt: "In the event you just saw, a wheel rolls:", 
-        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
-      { prompt: "In the event you just saw, the experimenter:", 
-        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
-    ],
-    image: [
-      { prompt: "In the event you just saw, which object was in it?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
-      { prompt: "In the event you just saw, which scenario did you encounter?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+      { prompt: "In the event you just saw, some objects were placed:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
+      { prompt: "In the event you just saw, some objects were placed:", options: ["on the purple shelf", "on the green board"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed some objects behind a screen", "placed some objects in a bucket"] },
     ]
   },
-
-  "clip4.mp4": {
+  "ANS VOE.mp4": {
     text: [
-      { prompt: "In the event you just saw, a wheel rolls:", 
-        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
-      { prompt: "In the event you just saw, the experimenter:", 
-        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
-    ],
-    image: [
-      { prompt: "In the event you just saw, which object was in it?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
-      { prompt: "In the event you just saw, which scenario did you encounter?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+      { prompt: "In the event you just saw, some objects were placed:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
+      { prompt: "In the event you just saw, some objects were placed:", options: ["on the purple shelf", "on the green board"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed some objects behind a screen", "placed some objects in a bucket"] },
     ]
   },
-
-  "clip5.mp4": {
+  "Continuity Feature.mp4": {
     text: [
-      { prompt: "In the event you just saw, a wheel rolls:", 
-        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
-      { prompt: "In the event you just saw, the experimenter:", 
-        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
-    ],
-    image: [
-      { prompt: "In the event you just saw, which object was in it?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
-      { prompt: "In the event you just saw, which scenario did you encounter?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a board onto a shelf", "placed two screens on the stage"] },
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on the stage", "on the ramp"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder behind a screen", "placed a cylinder into a bucket"] },
     ]
   },
-
-  "clip6.mp4": {
+  "Continuity Modulation.mp4": {
     text: [
-      { prompt: "In the event you just saw, a wheel rolls:", 
-        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
-      { prompt: "In the event you just saw, the experimenter:", 
-        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
-    ],
-    image: [
-      { prompt: "In the event you just saw, which object was in it?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
-      { prompt: "In the event you just saw, which scenario did you encounter?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a board onto a shelf", "placed two screens on the stage"] },
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on the stage", "on the ramp"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder behind a screen", "placed a cylinder into a bucket"] },
     ]
   },
-
-  "clip7.mp4": {
+  "Continuity Normal.mp4": {
     text: [
-      { prompt: "In the event you just saw, a wheel rolls:", 
-        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
-      { prompt: "In the event you just saw, the experimenter:", 
-        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
-    ],
-    image: [
-      { prompt: "In the event you just saw, which object was in it?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
-      { prompt: "In the event you just saw, which scenario did you encounter?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a board onto a shelf", "placed two screens on the stage"] },
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on the stage", "on the ramp"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder behind a screen", "placed a cylinder into a bucket"] },
     ]
   },
-
-  "clip8.mp4": {
+  "Continuity VOE.mp4": {
     text: [
-      { prompt: "In the event you just saw, a wheel rolls:", 
-        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
-      { prompt: "In the event you just saw, the experimenter:", 
-        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
-    ],
-    image: [
-      { prompt: "In the event you just saw, which object was in it?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
-      { prompt: "In the event you just saw, which scenario did you encounter?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a board onto a shelf", "placed two screens on the stage"] },
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on the stage", "on the ramp"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder behind a screen", "placed a cylinder into a bucket"] },
     ]
   },
-
-  "clip9.mp4": {
+  "H Solidity Feature.mp4": {
     text: [
-      { prompt: "In the event you just saw, a wheel rolls:", 
-        options: ["<TEXT_OPTION_1>", "<TEXT_OPTION_2>"] },
-      { prompt: "In the event you just saw, the experimenter:", 
-        options: ["<TEXT_OPTION_3>", "<TEXT_OPTION_4>"] }
-    ],
-    image: [
-      { prompt: "In the event you just saw, which object was in it?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] },
-      { prompt: "In the event you just saw, which scenario did you encounter?", 
-        options: ["img/clip2_objA.png", "img/clip2_objB.png"] }
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["placed a red wall on the stage", "placed a purple box on the stage"] },
+      { prompt: "in the event you just saw, a hand:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["placed a cylinder on the ramp", "placed two screens on the stage"] },
     ]
   },
-
+  "H Solidity Modulation.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a green wall on the stage", "placed a purple box on the stage"] },
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder on the ramp", "placed two screens on the stage"] },
+    ]
+  },
+  "H Solidity Normal.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed a purple box on the stage"] },
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder on the ramp", "placed two screens on the stage"] },
+    ]
+  },
+  "H Solidity VOE.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed a purple box on the stage"] },
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder on the ramp", "placed two screens on the stage"] },
+    ]
+  },
+  "Solidity Feature.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on a red board", "on a purple ramp"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red board onto a shelf", "placed a purple box on the stage"] },
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed a tall cup on the table"] },
+    ]
+  },
+  "Solidity Modulation.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on a green board", "on a purple ramp"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a green board onto a shelf", "placed a purple box on the stage"] },
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single tall screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed a tall cup on the table"] },
+    ]
+  },
+  "Solidity Normal.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on a red board", "on a purple ramp"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red board onto a shelf", "placed a purple box on the stage"] },
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single tall screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed a tall cup on the table"] },
+    ]
+  },
+  "Solidity VOE.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on a red board", "on a purple ramp"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red board onto a shelf", "placed a purple box on the stage"] },
+      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single tall screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed a tall cup on the table"] },
+    ]
+  },
+  "Support Feature.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a gap in its path", "towards a wall standing in its path"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a wall on the stage", "removed a box from the stage"] },
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed two cups on the stage", "placed two screens on the stage"] },
+    ]
+  },
+  "Support Modulation.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a gap in its path", "towards a wall standing in its path"] },
+      { prompt: "in the event you just saw, a hand:", options: ["removed a wall from the stage", "placed a box on the stage"] },
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed two cups on the stage", "placed two screens on the stage"] },
+    ]
+  },
+  "Support Normal.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a gap in its path", "towards a wall standing in its path"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a wall on the stage", "removed a box from the stage"] },
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed two cups on the stage", "placed two screens on the stage"] },
+    ]
+  },
+  "Support VOE.mp4": {
+    text: [
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a gap in its path", "towards a wall standing in its path"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a wall on the stage", "removed a box from the stage"] },
+      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed two cups on the stage", "placed two screens on the stage"] },
+    ]
+  },
+  "Wynn Feature.mp4": {
+    text: [
+      { prompt: "In the event you just saw, an object was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
+      { prompt: "In the event you just saw, an object was placed:", options: ["on the purple shelf", "on the green board"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed an object behind a screen", "placed an object in a bucket"] },
+    ]
+  },
+  "Wynn Modulation.mp4": {
+    text: [
+      { prompt: "In the event you just saw, an object was placed:", options: ["behind one of the two screens", "behind center of a wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
+      { prompt: "In the event you just saw, an object was placed:", options: ["on the purple shelf", "on the green board"] },
+      { prompt: "in the event you just saw, a hand:", options: ["put an object behind a screen", "put an object in a bucket"] },
+    ]
+  },
+  "Wynn Normal.mp4": {
+    text: [
+      { prompt: "In the event you just saw, an object was placed:", options: ["behind one of the two screens", "behind center of a wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
+      { prompt: "In the event you just saw, an object was placed:", options: ["onto a purple shelf", "onto a green board"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed an object behind a screen", "placed an object in a bucket"] },
+    ]
+  },
+  "Wynn VOE.mp4": {
+    text: [
+      { prompt: "In the event you just saw, an object was placed:", options: ["behind one of the two screens", "behind center of a wide screen"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
+      { prompt: "In the event you just saw, an object was placed:", options: ["onto a purple shelf", "onto a green board"] },
+      { prompt: "in the event you just saw, a hand:", options: ["placed an object behind a screen", "placed an object in a bucket"] },
+    ]
+  },
 };
 
 // =============================
