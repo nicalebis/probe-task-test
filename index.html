@@ -174,30 +174,30 @@ let TRIAL_DEFAULTS = {
 
 
 const video_list = [
-  'videos/ANS Feature.mp4',
-  'videos/ANS Modulation.mp4',
-  'videos/ANS Normal.mp4',
-  'videos/ANS VOE.mp4',
-  'videos/Continuity Feature.mp4',
-  'videos/Continuity Modulation.mp4',
-  'videos/Continuity Normal.mp4',
-  'videos/Continuity VOE.mp4',
-  'videos/H Solidity Feature.mp4',
-  'videos/H Solidity Modulation.mp4',
-  'videos/H Solidity Normal.mp4',
-  'videos/H Solidity VOE.mp4',
-  'videos/Solidity Feature.mp4',
-  'videos/Solidity Modulation.mp4',
-  'videos/Solidity Normal.mp4',
-  'videos/Solidity VOE.mp4',
-  'videos/Support Feature.mp4',
-  'videos/Support Modulation.mp4',
-  'videos/Support Normal.mp4',
-  'videos/Support VOE.mp4',
-  'videos/Wynn Feature.mp4',
-  'videos/Wynn Modulation.mp4',
-  'videos/Wynn Normal.mp4',
-  'videos/Wynn VOE.mp4',
+  'videos/ANS_Feature.mp4',
+  'videos/ANS_Modulation.mp4',
+  'videos/ANS_Normal.mp4',
+  'videos/ANS_VOE.mp4',
+  'videos/Continuity_Feature.mp4',
+  'videos/Continuity_Modulation.mp4',
+  'videos/Continuity_Normal.mp4',
+  'videos/Continuity_VOE.mp4',
+  'videos/H_Solidity_Feature.mp4',
+  'videos/H_Solidity_Modulation.mp4',
+  'videos/H_Solidity_Normal.mp4',
+  'videos/H_Solidity_VOE.mp4',
+  'videos/Solidity_Feature.mp4',
+  'videos/Solidity_Modulation.mp4',
+  'videos/Solidity_Normal.mp4',
+  'videos/Solidity_VOE.mp4',
+  'videos/Support_Feature.mp4',
+  'videos/Support_Modulation.mp4',
+  'videos/Support_Normal.mp4',
+  'videos/Support_VOE.mp4',
+  'videos/Wynn_Feature.mp4',
+  'videos/Wynn_Modulation.mp4',
+  'videos/Wynn_Normal.mp4',
+  'videos/Wynn_VOE.mp4',
 ];
 
 const preloadVideos = {
@@ -1383,7 +1383,7 @@ class PracticeMotionBackground { constructor(jsPsych){ this.jsPsych = jsPsych; }
       balls = [];
       const r = trial.ball_radius;
       for (let i=0;i<trial.balls_n;i++){
-        // random non-overlapping-ish start
+        // random non-overlapping-isH_Start
         let x, y, ok=false, attempts=0;
         while(!ok && attempts<1000){
           attempts++;
@@ -1445,10 +1445,10 @@ class PracticeMotionBackground { constructor(jsPsych){ this.jsPsych = jsPsych; }
             a.x -= nx*overlap; a.y -= ny*overlap;
             b.x += nx*overlap; b.y += ny*overlap;
 
-            // velocities along normal
+            // velocities along_Normal
             const va = a.vx*nx + a.vy*ny;
             const vb = b.vx*nx + b.vy*ny;
-            // swap normal components (perfectly elastic, equal mass)
+            // swap_Normal components (perfectly elastic, equal mass)
             const va_after = vb, vb_after = va;
             // tangential components
             const tax = a.vx - va*nx, tay = a.vy - va*ny;
@@ -1590,7 +1590,7 @@ class PracticeMotionBackground { constructor(jsPsych){ this.jsPsych = jsPsych; }
 // Comprehension check (text-only, 4 candidates per video)
 // =============================
 function comprehensionCheck(videoSrc){
-  // videoSrc looks like "videos/ANS Feature.mp4" → we want the filename only
+  // videoSrc looks like "videos/ANS_Feature.mp4" → we want the filename only
   const vidName = String(videoSrc).split('/').pop();
   const bank = questionBank[vidName];
 
@@ -1652,7 +1652,7 @@ function comprehensionCheck(videoSrc){
 
 
 const questionBank = {
-  "ANS Feature.mp4": {
+  "ANS_Feature.mp4": {
     text: [
       { prompt: "In the event you just saw, some objects were placed:", options: ["behind one of two screens", "behind a single wide screen"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
@@ -1660,7 +1660,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed some objects behind a screen", "placed some objects in a bucket"] },
     ]
   },
-  "ANS Modulation.mp4": {
+  "ANS_Modulation.mp4": {
     text: [
       { prompt: "In the event you just saw, some objects were placed:", options: ["behind one of two screens", "behind a single wide screen"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
@@ -1668,7 +1668,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed some objects behind a screen", "placed some objects in a bucket"] },
     ]
   },
-  "ANS Normal.mp4": {
+  "ANS_Normal.mp4": {
     text: [
       { prompt: "In the event you just saw, some objects were placed:", options: ["behind one of two screens", "behind a single wide screen"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
@@ -1676,7 +1676,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed some objects behind a screen", "placed some objects in a bucket"] },
     ]
   },
-  "ANS VOE.mp4": {
+  "ANS_VOE.mp4": {
     text: [
       { prompt: "In the event you just saw, some objects were placed:", options: ["behind one of two screens", "behind a single wide screen"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
@@ -1684,7 +1684,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed some objects behind a screen", "placed some objects in a bucket"] },
     ]
   },
-  "Continuity Feature.mp4": {
+  "Continuity_Feature.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a board onto a shelf", "placed two screens on the stage"] },
@@ -1692,7 +1692,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder behind a screen", "placed a cylinder into a bucket"] },
     ]
   },
-  "Continuity Modulation.mp4": {
+  "Continuity_Modulation.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a board onto a shelf", "placed two screens on the stage"] },
@@ -1700,7 +1700,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder behind a screen", "placed a cylinder into a bucket"] },
     ]
   },
-  "Continuity Normal.mp4": {
+  "Continuity_Normal.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a board onto a shelf", "placed two screens on the stage"] },
@@ -1708,7 +1708,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder behind a screen", "placed a cylinder into a bucket"] },
     ]
   },
-  "Continuity VOE.mp4": {
+  "Continuity_VOE.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a board onto a shelf", "placed two screens on the stage"] },
@@ -1716,7 +1716,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder behind a screen", "placed a cylinder into a bucket"] },
     ]
   },
-  "H Solidity Feature.mp4": {
+  "H_Solidity_Feature.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
       { prompt: "In the event you just saw, a cylinder rolled:", options: ["placed a red wall on the stage", "placed a purple box on the stage"] },
@@ -1724,7 +1724,7 @@ const questionBank = {
       { prompt: "In the event you just saw, a cylinder rolled:", options: ["placed a cylinder on the ramp", "placed two screens on the stage"] },
     ]
   },
-  "H Solidity Modulation.mp4": {
+  "H_Solidity_Modulation.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a green wall on the stage", "placed a purple box on the stage"] },
@@ -1732,7 +1732,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder on the ramp", "placed two screens on the stage"] },
     ]
   },
-  "H Solidity Normal.mp4": {
+  "H_Solidity_Normal.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed a purple box on the stage"] },
@@ -1740,7 +1740,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder on the ramp", "placed two screens on the stage"] },
     ]
   },
-  "H Solidity VOE.mp4": {
+  "H_Solidity_VOE.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed a purple box on the stage"] },
@@ -1748,7 +1748,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder on the ramp", "placed two screens on the stage"] },
     ]
   },
-  "Solidity Feature.mp4": {
+  "Solidity_Feature.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder was placed:", options: ["on a red board", "on a purple ramp"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red board onto a shelf", "placed a purple box on the stage"] },
@@ -1756,7 +1756,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed a tall cup on the table"] },
     ]
   },
-  "Solidity Modulation.mp4": {
+  "Solidity_Modulation.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder was placed:", options: ["on a green board", "on a purple ramp"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a green board onto a shelf", "placed a purple box on the stage"] },
@@ -1764,7 +1764,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed a tall cup on the table"] },
     ]
   },
-  "Solidity Normal.mp4": {
+  "Solidity_Normal.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder was placed:", options: ["on a red board", "on a purple ramp"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red board onto a shelf", "placed a purple box on the stage"] },
@@ -1772,7 +1772,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed a tall cup on the table"] },
     ]
   },
-  "Solidity VOE.mp4": {
+  "Solidity_VOE.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder was placed:", options: ["on a red board", "on a purple ramp"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red board onto a shelf", "placed a purple box on the stage"] },
@@ -1780,7 +1780,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed a tall cup on the table"] },
     ]
   },
-  "Support Feature.mp4": {
+  "Support_Feature.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a gap in its path", "towards a wall standing in its path"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a wall on the stage", "removed a box from the stage"] },
@@ -1788,7 +1788,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed two cups on the stage", "placed two screens on the stage"] },
     ]
   },
-  "Support Modulation.mp4": {
+  "Support_Modulation.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a gap in its path", "towards a wall standing in its path"] },
       { prompt: "in the event you just saw, a hand:", options: ["removed a wall from the stage", "placed a box on the stage"] },
@@ -1796,7 +1796,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed two cups on the stage", "placed two screens on the stage"] },
     ]
   },
-  "Support Normal.mp4": {
+  "Support_Normal.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a gap in its path", "towards a wall standing in its path"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a wall on the stage", "removed a box from the stage"] },
@@ -1804,7 +1804,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed two cups on the stage", "placed two screens on the stage"] },
     ]
   },
-  "Support VOE.mp4": {
+  "Support_VOE.mp4": {
     text: [
       { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a gap in its path", "towards a wall standing in its path"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a wall on the stage", "removed a box from the stage"] },
@@ -1812,7 +1812,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed two cups on the stage", "placed two screens on the stage"] },
     ]
   },
-  "Wynn Feature.mp4": {
+  "Wynn_Feature.mp4": {
     text: [
       { prompt: "In the event you just saw, an object was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
@@ -1820,7 +1820,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed an object behind a screen", "placed an object in a bucket"] },
     ]
   },
-  "Wynn Modulation.mp4": {
+  "Wynn_Modulation.mp4": {
     text: [
       { prompt: "In the event you just saw, an object was placed:", options: ["behind one of the two screens", "behind center of a wide screen"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
@@ -1828,7 +1828,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["put an object behind a screen", "put an object in a bucket"] },
     ]
   },
-  "Wynn Normal.mp4": {
+  "Wynn_Normal.mp4": {
     text: [
       { prompt: "In the event you just saw, an object was placed:", options: ["behind one of the two screens", "behind center of a wide screen"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
@@ -1836,7 +1836,7 @@ const questionBank = {
       { prompt: "in the event you just saw, a hand:", options: ["placed an object behind a screen", "placed an object in a bucket"] },
     ]
   },
-  "Wynn VOE.mp4": {
+  "Wynn_VOE.mp4": {
     text: [
       { prompt: "In the event you just saw, an object was placed:", options: ["behind one of the two screens", "behind center of a wide screen"] },
       { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
@@ -2446,7 +2446,7 @@ function trainingSequence(){
     size_scale: 1,
     duration_ms: null,
     require_space_to_start: false,
-    prompt_html: `<p style="color:#e5e7eb">Training 2: <b>Random, Normal size</b> — J = tall, F = wide.</p>`,
+    prompt_html: `<p style="color:#e5e7eb">Training 2: <b>Random,_Normal size</b> — J = tall, F = wide.</p>`,
     use_mm: TRIAL_DEFAULTS.use_mm,
     sizes_px: TRIAL_DEFAULTS.sizes,
     sizes_mm: TRIAL_DEFAULTS.sizes_mm,
