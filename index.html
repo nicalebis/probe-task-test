@@ -142,7 +142,7 @@ let OPTIONS = {
   FA_REFRACTORY_MS: 0,
   HEARTBEAT_EVERY_MS: 30000,
   USE_ADAPTIVE_TRAINING: true,
-  SKIP_TRAINING: false  
+  SKIP_TRAINING: true  
 };
 
 let STUDY_TYPE = 'rectangles'; // or 'letters'
@@ -198,6 +198,26 @@ const video_list = [
   'videos/Wynn_Modulation.mp4',
   'videos/Wynn_Normal.mp4',
   'videos/Wynn_VOE.mp4',
+  'videos/RollingContinuity_Feature.mp4',
+  'videos/RollingContinuity_Modulation.mp4',
+  'videos/RollingContinuity_Normal.mp4',
+  'videos/RollingContinuity_VOE.mp4',
+  'videos/Filler1.mp4',
+  'videos/Filler2.mp4',
+  'videos/Filler3.mp4',
+  'videos/Filler4.mp4',
+  'videos/Filler5.mp4',
+  'videos/Filler6.mp4',
+  'videos/Filler7.mp4',
+  'videos/Filler8.mp4',
+  'videos/Filler9.mp4',
+  'videos/Filler10.mp4',
+  'videos/Filler11.mp4',
+  'videos/Filler12.mp4',
+  'videos/Filler13.mp4',
+  'videos/Filler14.mp4',
+  'videos/Filler15.mp4',
+  'videos/Filler16.mp4',
 ];
 
 const preloadVideos = {
@@ -1640,6 +1660,23 @@ function comprehensionCheck(videoSrc){
       optionF: optF,
       optionJ: optJ
     },
+  on_load: () => {
+    // swallow keydowns before jsPsych sees them
+    const gate = (e) => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    };
+    window.addEventListener('keydown', gate, true); // capture phase
+
+    // (optional) visually mute choices during the lockout
+    // const choiceBoxes = document.querySelectorAll('[data-choice-box]');
+    // choiceBoxes.forEach(el => el.style.opacity = 0.5);
+
+    setTimeout(() => {
+      window.removeEventListener('keydown', gate, true);
+      // choiceBoxes.forEach(el => el.style.opacity = 1);
+    }, 1500);
+  },
     on_finish: (data) => {
       // jsPsych v7 stores the pressed key as a string in data.response
       const k = (data.response || '').toLowerCase();
@@ -1654,194 +1691,252 @@ function comprehensionCheck(videoSrc){
 const questionBank = {
   "ANS_Feature.mp4": {
     text: [
-      { prompt: "In the event you just saw, some objects were placed:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
-      { prompt: "In the event you just saw, some objects were placed:", options: ["on the purple shelf", "on the green board"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed some objects behind a screen", "placed some objects in a bucket"] },
+      { prompt: "Description: In the event you just saw, in the end:", options: ["ten balls were revealed", "five balls were revealed"] },
+      { prompt: "Description: in the event you just saw, a hand:", options: ["placed some balls on the stage", "placed a toy animal on the stage"] },
     ]
   },
   "ANS_Modulation.mp4": {
     text: [
-      { prompt: "In the event you just saw, some objects were placed:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
-      { prompt: "In the event you just saw, some objects were placed:", options: ["on the purple shelf", "on the green board"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed some objects behind a screen", "placed some objects in a bucket"] },
+      { prompt: "Description: In the event you just saw, in the end:", options: ["ten balls were revealed", "five balls were revealed"] },
+      { prompt: "Description: in the event you just saw, a hand:", options: ["placed some balls on the stage", "placed a toy animal on the stage"] },
     ]
   },
   "ANS_Normal.mp4": {
     text: [
-      { prompt: "In the event you just saw, some objects were placed:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
-      { prompt: "In the event you just saw, some objects were placed:", options: ["on the purple shelf", "on the green board"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed some objects behind a screen", "placed some objects in a bucket"] },
+      { prompt: "Description: In the event you just saw, in the end:", options: ["ten balls were revealed", "five balls were revealed"] },
+      { prompt: "Description: in the event you just saw, a hand:", options: ["placed some balls on the stage", "placed a toy animal on the stage"] },
     ]
   },
   "ANS_VOE.mp4": {
     text: [
-      { prompt: "In the event you just saw, some objects were placed:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
-      { prompt: "In the event you just saw, some objects were placed:", options: ["on the purple shelf", "on the green board"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed some objects behind a screen", "placed some objects in a bucket"] },
+      { prompt: "Description: In the event you just saw, in the end:", options: ["ten balls were revealed", "five balls were revealed"] },
+      { prompt: "Description: in the event you just saw, a hand:", options: ["placed some balls on the stage", "placed a toy animal on the stage"] },
     ]
   },
   "Continuity_Feature.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a board onto a shelf", "placed two screens on the stage"] },
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on the stage", "on the ramp"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder behind a screen", "placed a cylinder into a bucket"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["reappeared from the left screen", "reappeared from the right screen"] },
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed a wide screen on the stage", "placed two screens on the stage"] },
     ]
   },
   "Continuity_Modulation.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a board onto a shelf", "placed two screens on the stage"] },
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on the stage", "on the ramp"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder behind a screen", "placed a cylinder into a bucket"] },
+     { prompt: "Description: In the event you just saw, a cylinder:", options: ["reappeared from the left screen", "reappeared from the right screen"] },
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed a wide screen on the stage", "placed two screens on the stage"] },
     ]
   },
   "Continuity_Normal.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a board onto a shelf", "placed two screens on the stage"] },
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on the stage", "on the ramp"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder behind a screen", "placed a cylinder into a bucket"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["reappeared from the left screen", "reappeared from the right screen"] },
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed a wide screen on the stage", "placed two screens on the stage"] },
     ]
   },
   "Continuity_VOE.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a board onto a shelf", "placed two screens on the stage"] },
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on the stage", "on the ramp"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder behind a screen", "placed a cylinder into a bucket"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["reappeared from the left screen", "reappeared from the right screen"] },
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed a wide screen on the stage", "placed two screens on the stage"] },
     ]
   },
   "H_Solidity_Feature.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["placed a red wall on the stage", "placed a purple box on the stage"] },
-      { prompt: "in the event you just saw, a hand:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["placed a cylinder on the ramp", "placed two screens on the stage"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["ended on the left of the wall", "ended on the right of the wall"] },
+      { prompt: "Description: In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
     ]
   },
   "H_Solidity_Modulation.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a green wall on the stage", "placed a purple box on the stage"] },
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder on the ramp", "placed two screens on the stage"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["ended on the left of the wall", "ended on the right of the wall"] },
+      { prompt: "Description: In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
     ]
   },
   "H_Solidity_Normal.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed a purple box on the stage"] },
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder on the ramp", "placed two screens on the stage"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["ended on the left of the wall", "ended on the right of the wall"] },
+      { prompt: "Description: In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
     ]
   },
   "H_Solidity_VOE.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed a purple box on the stage"] },
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a cylinder on the ramp", "placed two screens on the stage"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["ended on the left of the wall", "ended on the right of the wall"] },
+      { prompt: "Description: In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
     ]
   },
   "Solidity_Feature.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on a red board", "on a purple ramp"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red board onto a shelf", "placed a purple box on the stage"] },
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed a tall cup on the table"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["ended above the platform", "ended "below the platform] },
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed two small screens on the stage"] },
     ]
   },
   "Solidity_Modulation.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on a green board", "on a purple ramp"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a green board onto a shelf", "placed a purple box on the stage"] },
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single tall screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed a tall cup on the table"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["ended above the platform", "ended "below the platform] },
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed two small screens on the stage"] },
     ]
   },
   "Solidity_Normal.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on a red board", "on a purple ramp"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red board onto a shelf", "placed a purple box on the stage"] },
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single tall screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed a tall cup on the table"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["ended above the platform", "ended "below the platform] },
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed two small screens on the stage"] },
     ]
   },
   "Solidity_VOE.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["on a red board", "on a purple ramp"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red board onto a shelf", "placed a purple box on the stage"] },
-      { prompt: "In the event you just saw, a cylinder was placed:", options: ["behind one of two screens", "behind a single tall screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed a tall cup on the table"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["ended above the platform", "ended "below the platform] },
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed a tall screen on the stage", "placed two small screens on the stage"] },
     ]
   },
   "Support_Feature.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a gap in its path", "towards a wall standing in its path"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a wall on the stage", "removed a box from the stage"] },
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed two cups on the stage", "placed two screens on the stage"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["ended in a pit between two boxes", "ended on a box on the right"] },
+      { prompt: "Description: In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
     ]
   },
   "Support_Modulation.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a gap in its path", "towards a wall standing in its path"] },
-      { prompt: "in the event you just saw, a hand:", options: ["removed a wall from the stage", "placed a box on the stage"] },
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed two cups on the stage", "placed two screens on the stage"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["ended in a pit between two boxes", "ended on a box on the right"] },
+      { prompt: "Description: In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
     ]
   },
   "Support_Normal.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a gap in its path", "towards a wall standing in its path"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a wall on the stage", "removed a box from the stage"] },
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed two cups on the stage", "placed two screens on the stage"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["ended in a pit between two boxes", "ended on a box on the right"] },
+      { prompt: "Description: In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
     ]
   },
   "Support_VOE.mp4": {
     text: [
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["towards a gap in its path", "towards a wall standing in its path"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a wall on the stage", "removed a box from the stage"] },
-      { prompt: "In the event you just saw, a cylinder rolled:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed two cups on the stage", "placed two screens on the stage"] },
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["ended in a pit between two boxes", "ended on a box on the right"] },
+      { prompt: "Description: In the event you just saw, a cylinder rolled:", options: ["towards a wall standing in its path", "towards a gap in its path"] },
     ]
   },
   "Wynn_Feature.mp4": {
     text: [
-      { prompt: "In the event you just saw, an object was placed:", options: ["behind one of two screens", "behind a single wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
-      { prompt: "In the event you just saw, an object was placed:", options: ["on the purple shelf", "on the green board"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed an object behind a screen", "placed an object in a bucket"] },
+      { prompt: "Description: In the event you just saw, in the end:", options: ["two toy animals sat on the stage", "one toy animal sat on the stage"] },
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed a toy animal on the stage", "placed a cylinder on the ramp"] },
     ]
   },
   "Wynn_Modulation.mp4": {
     text: [
-      { prompt: "In the event you just saw, an object was placed:", options: ["behind one of the two screens", "behind center of a wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
-      { prompt: "In the event you just saw, an object was placed:", options: ["on the purple shelf", "on the green board"] },
-      { prompt: "in the event you just saw, a hand:", options: ["put an object behind a screen", "put an object in a bucket"] },
+       { prompt: "Description: In the event you just saw, in the end:", options: ["two toy animals sat on the stage", "one toy animal sat on the stage"] },
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed a toy animal on the stage", "placed a cylinder on the ramp"] },
     ]
   },
   "Wynn_Normal.mp4": {
     text: [
-      { prompt: "In the event you just saw, an object was placed:", options: ["behind one of the two screens", "behind center of a wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
-      { prompt: "In the event you just saw, an object was placed:", options: ["onto a purple shelf", "onto a green board"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed an object behind a screen", "placed an object in a bucket"] },
+       { prompt: "Description: In the event you just saw, in the end:", options: ["two toy animals sat on the stage", "one toy animal sat on the stage"] },
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed a toy animal on the stage", "placed a cylinder on the ramp"] },
     ]
   },
   "Wynn_VOE.mp4": {
     text: [
-      { prompt: "In the event you just saw, an object was placed:", options: ["behind one of the two screens", "behind center of a wide screen"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed a red wall on the stage", "placed two screens on the stage"] },
-      { prompt: "In the event you just saw, an object was placed:", options: ["onto a purple shelf", "onto a green board"] },
-      { prompt: "in the event you just saw, a hand:", options: ["placed an object behind a screen", "placed an object in a bucket"] },
+       { prompt: "Description: In the event you just saw, in the end:", options: ["two toy animals sat on the stage", "one toy animal sat on the stage"] },
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed a toy animal on the stage", "placed a cylinder on the ramp"] },
+    ]
+  },
+"RollingContinuity_Feature.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["reappeared from the left screen", "reappeared from the right screen"] },
+      { prompt: "Description: in the event you just saw, a hand:", options: ["placed a wide screen on the stage", "placed two small screens on the stage"] },
+    ]
+  },
+  "RollingContinuity_Modulation.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["reappeared from the left screen", "reappeared from the right screen"] },
+      { prompt: "Description: in the event you just saw, a hand:", options: ["placed a wide screen on the stage", "placed two small screens on the stage"] },
+    ]
+  },
+  "RollingContinuity_Normal.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["reappeared from the left screen", "reappeared from the right screen"] },
+      { prompt: "Description: in the event you just saw, a hand:", options: ["placed a wide screen on the stage", "placed two small screens on the stage"] },
+    ]
+  },
+  "RollingContinuity_VOE.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["reappeared from the left screen", "reappeared from the right screen"] },
+      { prompt: "Description: in the event you just saw, a hand:", options: ["placed a wide screen on the stage", "placed two small screens on the stage"] },
+    ]
+  },
+
+“Filler1.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed an empty box on the stage", "placed a toy car on the stage"] },
+    ]
+  },
+"Filler2.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed an empty box on the stage", "placed a toy car on the stage"] },
+    ]
+  },
+"Filler3.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed an empty box on the stage", "placed a toy car on the stage"] },
+    ]
+  },
+"Filler4.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed an empty box on the stage", "placed a toy car on the stage"] },
+    ]
+  },
+"Filler5.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a cylinder was placed:", options: ["at the side of a red box", "on top of a red box"] },
+    ]
+  },
+"Filler6.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a cylinder was placed:", options: ["at the side of a red box", "on top of a red box"] },
+    ]
+  },
+"Filler7.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a cylinder was placed:", options: ["at the side of a red box", "on top of a red box"] },
+    ]
+  },
+"Filler8.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a cylinder was placed:", options: ["at the side of a red box", "on top of a red box"] },
+    ]
+  },
+
+“Filler9.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed an empty box on the stage", "placed a toy car on the stage"] },
+    ]
+  },
+"Filler10.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed an empty box on the stage", "placed a toy car on the stage"] },
+    ]
+  },
+"Filler11.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed an empty box on the stage", "placed a toy car on the stage"] },
+    ]
+  },
+"Filler12.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a hand:", options: ["placed an empty box on the stage", "placed a toy car on the stage"] },
+    ]
+  },
+"Filler13.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["was brushed by something", "was knocked by a hand"] },
+    ]
+  },
+"Filler14.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["was brushed by something", "was knocked by a hand"] },
+    ]
+  },
+"Filler15.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["was brushed by something", "was knocked by a hand"] },
+    ]
+  },
+"Filler16.mp4": {
+    text: [
+      { prompt: "Description: In the event you just saw, a cylinder:", options: ["was brushed by something", "was knocked by a hand"] },
     ]
   },
 };
